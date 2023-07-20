@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>숫자야구</title>
+</head>
+<body>
+  <form id="form">
+    <input type="text" id="input">
+    <button type="button">확인</button>
+  </form>
+  <div id="logs"></div>
+
+  <script>
+    const $input = document.querySelector('#input');
+    const $form = document.querySelector('#form');
+    const $logs = document.querySelector('#logs');
+    const $button = document.querySelector('button');
+
+    const numbers = [];
+    const answer = [];
+
+    for(let n=0; n<9; n++){
+      numbers.push(n+1);
+    }
+    for(let n=0; n<4; n++){
+      const index = Math.floor(Math.random() * numbers.length);
+      answer.push(numbers[index]);
+      numbers.splice(index, 1);
+    }
+    
+    // 랜덤 값 4자리 정해짐
+    // 사용자가 답 입력
+    // 숫자가 아님, 4자리가 아님, 4자리 숫자 중 같은 숫자가 있음
+
+
+    
+    function onClickButton(){
+      const str = String($input.value);
+      const newArrString = Array.from(str);
+      const newArrNumber = newArrString.map(Number);
+      const obj = {};
+      const result = [];
+
+      // 입력 값 중복된 값인지 유효성 검사
+      for(let i=0; i<newArrNumber.length; i++){
+        if(obj[newArrNumber[i]]){
+          result.push(newArrNumber[i]);
+        }else{
+          obj[newArrNumber[i]] = true;
+        }
+      }
+
+      // 입력된 값이 숫자가 맞는지 유효성 검사
+      for(let i=0; i < 4; i++){
+        if(isNaN(newArrNumber[i])){
+          alert('숫자를 입력하세요');
+          return;
+        }else if(!(newArrNumber.length === 4)){
+          alert('4개의 숫자를 입력하세요');
+          return;
+        }else if(result.length > 0){
+          alert('4개의 각기 다른 숫자를 입력하세요');
+          return;
+        }
+      }
+
+
+      let strike = 0;
+      let ball = 0;
+
+      console.log(answer);
+      console.log(newArrNumber);
+      
+      // 정상 입력 된 상황.. > 각 숫자끼리 검사해야될듯?
+      // 답의 1 2 3 4 중 1번째와  입력한 수의 1 2 3 4 번째 모두 비교 
+      for(let i=0; i<4; i++){
+        if(answer[0] === newArrNumber[i]){
+          if(answer[0] === newArrNumber[0]){
+            strike += 1;
+          }else{
+            ball += 1;
+          }
+        }else if(answer[1] === newArrNumber[i]){
+          if(answer[1] === newArrNumber[1]){
+            strike += 1;
+          }else{
+            ball += 1;
+          }
+        }else if(answer[2] === newArrNumber[i]){
+          if(answer[2] === newArrNumber[2]){
+            strike += 1;
+          }else{
+            ball += 1;
+          }
+        }else if(answer[3] === newArrNumber[i]){
+          if(answer[3] === newArrNumber[3]){
+            strike += 1;
+          }else{
+            ball += 1;
+          }
+        }
+        
+      }
+      $logs.textContent = 'strike:' + strike + ',' + ' ball:' + ball;
+      console.log('strike:' + strike);
+      console.log('ball:' + ball);
+      
+      
+    }
+
+    $button.addEventListener('click', onClickButton);
+
+    // 유효성 검사
+    // 
+
+  </script>
+</body>
+</html>
